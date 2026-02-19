@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class CustomerMapper {
 
-//    TODO Pesquisem sobre MapStruct
     public Customer fromDtoToEntity(CreateCustomerRequestDto dto) {
         return new Customer(
+                null,
                 dto.name(),
                 dto.email(),
                 dto.password()

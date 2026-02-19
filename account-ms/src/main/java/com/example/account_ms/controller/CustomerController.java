@@ -6,21 +6,19 @@ import com.example.account_ms.dto.input.UpdateCustomerRequestDto;
 import com.example.account_ms.dto.output.CustomerResponseDto;
 import com.example.account_ms.service.CustomerService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/customers")
 public class CustomerController {
 
     private final CustomerService customerService;
-
-    public CustomerController(CustomerService customerService) {
-        this.customerService = customerService;
-    }
 
     @PostMapping
     public ResponseEntity<Void> create(@RequestBody @Valid CreateCustomerRequestDto customerDto) {

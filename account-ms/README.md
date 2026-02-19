@@ -8,7 +8,7 @@ Microsserviço RESTful construído com **Spring Boot 4.0.2** e **Java 17** para 
 - Deverá ser substituido o h2 utilizado em sala de aula por outro banco relacional (Postgres; Oracle; etc);
 - Não é obrigatório seguir os packages desta aplicação no seu projeto. Pode seguir o padrão arquitetural da sua empresa ou do seu estudo;
 - Tudo que estiver no seu projeto, será necessário explicação na apresentação
-- É permitido o uso de Lombok. Para auxiliar olhas a branch ... (#TODO)
+- É permitido o uso de Lombok. Este projeto já utiliza Lombok nesta branch (`sample-lombok`).
 ## Stack Tecnológica
 
 | Tecnologia | Finalidade |
@@ -18,6 +18,7 @@ Microsserviço RESTful construído com **Spring Boot 4.0.2** e **Java 17** para 
 | Spring Web MVC | Camada de API REST |
 | Spring Data JPA | Acesso a dados / ORM |
 | Bean Validation | Validação de requisições |
+| Lombok | Redução de boilerplate (getters, setters, construtores) |
 | H2 Database | Banco de dados relacional em memória |
 | Gradle 9.3 | Ferramenta de build |
 
@@ -67,13 +68,13 @@ Este projeto segue o padrão de **Arquitetura em Camadas (Layered Architecture)*
 com.example.account_ms
 ├── AccountMsApplication.java          # Ponto de entrada do Spring Boot
 ├── controller/
-│   └── CustomerController.java        # Endpoints REST (@RestController)
+│   └── CustomerController.java        # Endpoints REST (@RestController, @RequiredArgsConstructor)
 ├── service/
-│   └── CustomerService.java           # Lógica de negócio (@Service)
+│   └── CustomerService.java           # Lógica de negócio (@Service, @RequiredArgsConstructor)
 ├── repository/
 │   └── CustomerRepository.java        # Acesso a dados (@Repository)
 ├── model/
-│   └── Customer.java                  # Entidade JPA (@Entity)
+│   └── Customer.java                  # Entidade JPA (@Entity, @Getter, @Setter, @NoArgsConstructor, @AllArgsConstructor)
 ├── dto/
 │   ├── input/
 │   │   ├── CreateCustomerRequestDto.java   # Corpo da requisição POST
@@ -94,7 +95,7 @@ com.example.account_ms
 
 ### 1. Camada Controller
 
-O `CustomerController` é anotado com `@RestController` e mapeia requisições HTTP para métodos Java. Ele **não contém lógica de negócio** -- apenas recebe as requisições, delega para o service e retorna respostas com os status codes HTTP apropriados.
+O `CustomerController` é anotado com `@RestController` e mapeia requisições HTTP para métodos Java. Ele **não contém lógica de negócio** -- apenas recebe as requisições, delega para o service e retorna respostas com os status codes HTTP apropriados. A anotação `@RequiredArgsConstructor` do Lombok gera automaticamente o construtor para injeção das dependências `final`.
 
 - `POST /api/customers` -- cria um cliente (retorna `204 No Content`)
 - `GET /api/customers` -- lista todos os clientes
@@ -105,7 +106,7 @@ O `CustomerController` é anotado com `@RestController` e mapeia requisições H
 
 ### 2. Camada Service
 
-O `CustomerService` é anotado com `@Service` e contém toda a **lógica de negócio**. Ele utiliza o `CustomerRepository` para operações no banco de dados e o `CustomerMapper` para converter entre entidades e DTOs. A camada de service é onde você valida regras de negócio e orquestra operações.
+O `CustomerService` é anotado com `@Service` e contém toda a **lógica de negócio**. Ele utiliza o `CustomerRepository` para operações no banco de dados e o `CustomerMapper` para converter entre entidades e DTOs. A camada de service é onde você valida regras de negócio e orquestra operações. Assim como no controller, utiliza `@RequiredArgsConstructor` para injeção de dependências.
 
 ### 3. Camada Repository
 
@@ -116,6 +117,17 @@ O `CustomerRepository` estende `JpaRepository<Customer, UUID>`, o que fornece um
 A entidade `Customer` é uma classe anotada com JPA, mapeada para uma tabela no banco de dados. Ela utiliza `UUID` como chave primária com `GenerationType.UUID` para geração automática.
 
 Campos: `id` (UUID), `name`, `email`, `password`.
+
+As anotações do Lombok eliminam todo o boilerplate da entidade:
+
+| Anotação | Substitui |
+|---|---|
+| `@Getter` | Todos os métodos `get*()` |
+| `@Setter` | Todos os métodos `set*()` |
+| `@NoArgsConstructor` | Construtor vazio (exigido pelo JPA) |
+| `@AllArgsConstructor` | Construtor com todos os campos |
+
+> **Nota:** Para entidades JPA, evita-se `@Data` pois ele gera `equals()`/`hashCode()` baseados em todos os campos, o que pode causar problemas com lazy loading e proxies do Hibernate.
 
 ### 5. DTOs (Data Transfer Objects)
 

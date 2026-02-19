@@ -8,22 +8,18 @@ import com.example.account_ms.exceptions.ResourceNotFoundException;
 import com.example.account_ms.mappers.CustomerMapper;
 import com.example.account_ms.model.Customer;
 import com.example.account_ms.repository.CustomerRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @Service
 public class CustomerService {
 
-
     private final CustomerRepository customerRepository;
     private final CustomerMapper customerMapper;
-
-    public CustomerService(CustomerRepository customerRepository, CustomerMapper customerMapper) {
-        this.customerRepository = customerRepository;
-        this.customerMapper = customerMapper;
-    }
 
     public void save(CreateCustomerRequestDto customerDto) {
         var customer = customerMapper.fromDtoToEntity(customerDto);

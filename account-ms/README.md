@@ -8,7 +8,7 @@ Microsserviço RESTful construído com **Spring Boot 4.0.2** e **Java 17** para 
 - Deverá ser substituido o h2 utilizado em sala de aula por outro banco relacional (Postgres; Oracle; etc);
 - Não é obrigatório seguir os packages desta aplicação no seu projeto. Pode seguir o padrão arquitetural da sua empresa ou do seu estudo;
 - Tudo que estiver no seu projeto, será necessário explicação na apresentação
-- É permitido o uso de Lombok. Para auxiliar olhas a branch ... (#TODO)
+- É permitido o uso de Lombok. Exemplo na branch (`sample-lombok`).
 ## Stack Tecnológica
 
 | Tecnologia | Finalidade |

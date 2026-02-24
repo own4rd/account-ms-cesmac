@@ -1,15 +1,12 @@
 package com.example.account_ms.dto.output;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.UUID;
 
-public record CustomerResponseDto(
+public record DependentResponseDto(
         UUID id,
         String name,
-        String email,
         LocalDate birthDate,
-        Integer age,
-        List<DependentResponseDto> dependents
+        String relationship
 ) {
 }

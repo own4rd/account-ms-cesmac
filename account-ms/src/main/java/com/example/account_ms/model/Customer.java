@@ -2,6 +2,10 @@ package com.example.account_ms.model;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -20,6 +24,11 @@ public class Customer {
 
     @Column(nullable = false)
     private String password;
+
+    private LocalDate birthDate;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Dependent> dependents = new ArrayList<>();
 
     public Customer() {
     }
@@ -72,5 +81,38 @@ public class Customer {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public List<Dependent> getDependents() {
+        return dependents;
+    }
+
+    public void setDependents(List<Dependent> dependents) {
+        this.dependents = dependents;
+    }
+
+    public Integer getAge() {
+        if (birthDate == null) {
+            return null;
+        }
+        return Period.between(birthDate, LocalDate.now()).getYears();
+    }
+
+    public void addDependent(Dependent dependent) {
+        dependents.add(dependent);
+        dependent.setCustomer(this);
+    }
+
+    public void removeDependent(Dependent dependent) {
+        dependents.remove(dependent);
+        dependent.setCustomer(null);
     }
 }

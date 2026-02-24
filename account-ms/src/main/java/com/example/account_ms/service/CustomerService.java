@@ -61,6 +61,10 @@ public class CustomerService {
             customer.setEmail(dto.email());
         }
 
+        if (dto.birthDate() != null) {
+            customer.setBirthDate(dto.birthDate());
+        }
+
         customerRepository.save(customer);
 
         return customerMapper.fromEntityToDto(customer);

@@ -8,6 +8,7 @@ import com.example.account_ms.exceptions.ResourceNotFoundException;
 import com.example.account_ms.mappers.CustomerMapper;
 import com.example.account_ms.model.Customer;
 import com.example.account_ms.repository.CustomerRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,14 +20,18 @@ public class CustomerService {
 
     private final CustomerRepository customerRepository;
     private final CustomerMapper customerMapper;
+    private final PasswordEncoder passwordEncoder;
 
-    public CustomerService(CustomerRepository customerRepository, CustomerMapper customerMapper) {
+    public CustomerService(CustomerRepository customerRepository, CustomerMapper customerMapper,
+                           PasswordEncoder passwordEncoder) {
         this.customerRepository = customerRepository;
         this.customerMapper = customerMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public void save(CreateCustomerRequestDto customerDto) {
         var customer = customerMapper.fromDtoToEntity(customerDto);
+        customer.setPassword(passwordEncoder.encode(customerDto.password()));
         customerRepository.save(customer);
     }
 

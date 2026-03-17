@@ -24,12 +24,6 @@ public class CustomerController {
 
     }
 
-    @PostMapping
-    public ResponseEntity<Void> create(@RequestBody @Valid CreateCustomerRequestDto customerDto) {
-        customerService.save(customerDto);
-        return ResponseEntity.noContent().build();
-    }
-
     @GetMapping
     public ResponseEntity<List<CustomerResponseDto>> list() {
         var customers = customerService.findAll();

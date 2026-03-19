@@ -15,3 +15,7 @@ spring:
       ddl-auto: ${JPA_DDL_AUTO:update}
     show-sql: ${JPA_SHOW_SQL:true}
 
+jwt:
+  secret: ${JWT_SECRET:Y2hhbmNlLXRoaXMtaW4tcHJvZHVjdGlvbi1hZGl0ZWMtc2VjcmV0LWtleS0yMDI2LXNwcmluZy1ib290}
+  expiration: ${JWT_EXPIRATION:86400000}
+

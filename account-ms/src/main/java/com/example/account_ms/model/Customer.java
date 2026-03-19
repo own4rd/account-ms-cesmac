@@ -25,6 +25,9 @@ public class Customer {
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
+    private String role = "USER";
+
     private LocalDate birthDate;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -81,6 +84,14 @@ public class Customer {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public LocalDate getBirthDate() {

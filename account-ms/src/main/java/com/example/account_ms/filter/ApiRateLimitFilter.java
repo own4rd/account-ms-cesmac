@@ -16,7 +16,7 @@ public class ApiRateLimitFilter implements Filter {
 
     private Bucket createNewBucket() {
         // Trocar por env var
-        int CAPACITY = 5;
+        int CAPACITY = 20;
         // Trocar por env var
         int MINUTES_LIMIT = 1;
         Bandwidth limit = Bandwidth.builder()
